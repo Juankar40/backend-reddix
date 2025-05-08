@@ -1,0 +1,55 @@
+[
+    {
+      "_id": "680bf7491cc3be8ccdd24070",
+      "username": "juankar",
+      "name": "Gabriel",
+      "age": 21,
+      "email": "gabrielboiza@gmail.com",
+      "password": "contraseña123",
+      "posts": ["6809f9db371970ec6cf6dcf2", "6809f9db371970ec6cf6dcf3"],
+      "comments": [],
+      "createdAt": "2025-04-25T20:57:45.376Z",
+      "updatedAt": "2025-04-25T20:57:45.376Z",
+      "__v": 0
+    },
+    {
+      "_id": "680bf7491cc3be8ccdd24071",
+      "username": "anita99",
+      "name": "Ana López",
+      "age": 28,
+      "email": "ana.lopez@example.com",
+      "password": "supersecure",
+      "posts": ["6809f9db371970ec6cf6dcf4", "6809f9db371970ec6cf6dcf5"],
+      "comments": [],
+      "createdAt": "2025-04-25T21:00:00.000Z",
+      "updatedAt": "2025-04-25T21:00:00.000Z",
+      "__v": 0
+    },
+    {
+      "_id": "680bf7491cc3be8ccdd24072",
+      "username": "techgeek",
+      "name": "Carlos Torres",
+      "age": 30,
+      "email": "carlos@devmail.com",
+      "password": "devlife42",
+      "posts": ["6809f9db371970ec6cf6dcf6"],
+      "comments": [],
+      "createdAt": "2025-04-25T21:05:00.000Z",
+      "updatedAt": "2025-04-25T21:05:00.000Z",
+      "__v": 0
+    },
+    {
+      "_id": "680bf7491cc3be8ccdd24073",
+      "username": "lilcoder",
+      "name": "Sara Martínez",
+      "age": 19,
+      "email": "sara.codes@example.com",
+      "password": "12345678",
+      "posts": [],
+      "comments": ["6809f9db371970ec6cf6dcf7"],
+      "createdAt": "2025-04-25T21:10:00.000Z",
+      "updatedAt": "2025-04-25T21:10:00.000Z",
+      "__v": 0
+    }
+  ]
+  
