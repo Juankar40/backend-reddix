@@ -50,7 +50,7 @@ export const login = async (req, res) => {
             }
         )
 
-        res.cookie('access_token', token, {httpOnly: true, secure: false}).send("cookie metida")
+        res.cookie('access_token', token, { httpOnly: true, secure: false, sameSite: 'None' });
 
         
     } catch (error) {
