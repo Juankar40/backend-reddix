@@ -50,7 +50,11 @@ export const login = async (req, res) => {
             }
         )
 
-        res.cookie('access_token', token, { httpOnly: true, secure: false, sameSite: 'None' });
+        res.cookie('access_token', token, {
+            httpOnly: true,
+            secure: true, // ← true en producción HTTPS (como en Render)
+            sameSite: 'None'
+          }).json({ message: "Login exitoso" });
 
         
     } catch (error) {
