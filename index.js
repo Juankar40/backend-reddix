@@ -6,7 +6,8 @@ import connectDB from "./config/db.js"
 import usersRouter from "./routes/user.route.js"
 import postsRouter from "./routes/post.route.js"
 import authRouter from "./routes/auth.routes.js"
-
+import commentRouter from "./routes/comment.routes.js"  
+import searchRouter from "./routes/search.routes.js"  
 
 dotenv.config()
 connectDB()
@@ -14,9 +15,9 @@ connectDB()
 const app = express()
 app.use(express.json()) //lee el body de las request y las transforma en un objeto json
 app.use(cors({
-  origin: 'https://frontend-reddix.vercel.app',
-  credentials: true
-}));
+    origin: 'https://frontend-reddix.vercel.app',
+    credentials: true
+  }));
 app.use(cookieParser()) //middleware para recibir las cookies en cada request
 app.use('/uploads', express.static('uploads'));
 
@@ -29,7 +30,8 @@ app.get('/', (req, res) => {
 app.use("/", usersRouter)
 app.use("/", postsRouter)
 app.use("/", authRouter)
-
+app.use("/", commentRouter)
+app.use("/", searchRouter)
 
 
 const PORT = process.env.PORT || 3000
