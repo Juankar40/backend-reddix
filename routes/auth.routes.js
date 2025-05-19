@@ -9,8 +9,6 @@ router.post('/register', authController.register)
 router.post('/login', authController.login)
 router.post('/logout', authController.logout)
 
-router.get("/check-auth", authMiddleware.verifyToken, (req, res) => {
-    res.status(200).json({ message: "Authenticated", user: req.user });
-});
+router.get("/check-auth", authMiddleware.checkToken);
 
 export default router

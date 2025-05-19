@@ -1,36 +1,39 @@
-import User from "../models/User.js"
-import bcrypt from "bcrypt"
+import { execFile } from 'child_process';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import User from '../models/User.js';
+import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken"
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export const register = async (req, res) => {
-    const {username, name, age, email, password} = req.body
+  const { username, name, email, password } = req.body;
 
-    try {
-        
-        if(await User.findOne({username : username})){throw new Error("Username already exist")}
-        if(await User.findOne({email : email})){throw new Error("Email already exist")}
+  try {
+    if (await User.findOne({ username })) throw new Error("Username already exists");
+    if (await User.findOne({ email })) throw new Error("Email already exists");
 
-        const hashPassword = await bcrypt.hash(password, parseInt(process.env.SALT_HASH))
+    const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT_HASH));
 
-        const user = new User({
-            username : username,
-            name : name,
-            age : age,
-            email : email,
-            password : hashPassword,
-            posts : [],
-            comments : []
-        })
-    
-        await user.save()
-    
-        res.json({message: "User registered succesful"})
-    } catch (error) {
-        res.status(409).json({message: error.message})
-    }
-    
-}
+    const user = new User({ username, name, email, password: hashedPassword });
+    await user.save();
+
+    // Llamar al script de envío de correo
+    const scriptPath = path.resolve(__dirname, '../scripts/send_email.py');
+    execFile('python3', [scriptPath, email, name], (error, stdout, stderr) => {
+      if (error) console.error(`Email script error: ${error}`);
+      if (stderr) console.error(`stderr: ${stderr}`);
+      console.log(`stdout: ${stdout}`);
+    });
+
+    res.json({ message: "User registered successfully" });
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
+};
 
 export const login = async (req, res) => {
     const {email, password} = req.body

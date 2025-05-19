@@ -1,9 +1,99 @@
 import User from "../models/User.js"
-import Comment from "../models/Comment.js";
 import Post from "../models/Post.js";
-import multer from "multer";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
+
+
+export const getChatHistory = async (req, res) => {
+    const user_id = req.user.id;
+    const otherUser_id = req.params.id;
+
+    const user = await User.findById(user_id);
+    const filteredChats = user.chats.filter(
+        chat =>
+            (chat.from == user_id && chat.to == otherUser_id) ||
+            (chat.from == otherUser_id && chat.to == user_id)
+    );
+
+    res.json({ chats: filteredChats });
+};
+
+
+
+export const getFollowedUsers = async (req, res) => {
+    const user_id = req.user.id
+    const user = await User.findById(user_id).populate("following")
+
+    res.json({following: user.following})
+}
+
+export const getFollowers = async (req, res) => {
+    const user_id = req.user.id
+    const user = await User.findById(user_id).populate("followers")
+
+    res.json({followers: user.followers})
+}
+
+export const getFollowedUsersByUsername = async (req, res) => {
+    const username = req.params.username
+    const user = await User.findOne({username: username}).populate("following")
+
+    res.json({following: user.following})
+}
+
+export const getFollowersByUsername = async (req, res) => {
+    const username = req.params.username
+    const user = await User.findOne({username: username}).populate("followers")
+
+    res.json({followers: user.followers})
+}
+
+export const followUser = async (req, res) => {
+    const username = req.params.username
+    
+    const user = await User.findOne({username: username})
+
+    await User.findByIdAndUpdate(
+        req.user.id,
+        { $addToSet: { following: user._id } }, // evita duplicados
+        { new: true } //devuelve el documento actualizado
+    );
+
+    await User.findByIdAndUpdate(
+        user._id,
+        {$addToSet: {followers: req.user.id}}
+    )
+
+    res.json({message: "succesful"})
+}
+
+export const unfollowUser = async (req, res) => {
+    const username = req.params.username;
+
+    const user = await User.findOne({ username: username });
+
+    await User.findByIdAndUpdate(
+        req.user.id,
+        { $pull: { following: user._id } }, // elimina el user del array de following
+        { new: true }
+    );
+
+    await User.findByIdAndUpdate(
+        user._id,
+        { $pull: { followers: req.user.id } }, // elimina al usuario actual del array de followers
+        {new: true}
+    );
+
+    res.json({ message: "unfollow successful" });
+};
+
+
+export const checkFollowStatus = async (req, res) => {
+    const {username} = req.params
+    const user = await User.findOne({username: username})
+    const myUser = await User.findById(req.user.id)
+    res.json({isFollowing: myUser.following.includes(user._id)})
+}
 
 export const getAllUsers = async (req, res) => {
     const users = await User.find();

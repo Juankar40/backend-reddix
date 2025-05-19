@@ -16,6 +16,7 @@ route.post("/getVoteState", authMiddleware.verifyToken, PostController.getVoteSt
 
 
 route.post("/createPost", authMiddleware.verifyToken, upload.single("file"), PostController.createPost)
+route.put("/updatePost/:id", authMiddleware.verifyToken, upload.single("file"), PostController.updatePost)
 route.delete("/deletePost", authMiddleware.verifyToken, PostController.deletePost)
 
 export default route
