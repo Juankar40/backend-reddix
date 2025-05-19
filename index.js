@@ -22,7 +22,7 @@ const server = http.createServer(app)
 
 const io = new SocketServer(server, {
   cors: {
-    origin: 'http://localhost:5173',
+    origin: 'https://backend-reddix.onrender.com/',
     credentials: true,
   }
 })
@@ -32,7 +32,7 @@ configureSockets(io)
 
 app.use(express.json())
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://backend-reddix.onrender.com/',
   credentials: true
 }))
 app.use(cookieParser())
